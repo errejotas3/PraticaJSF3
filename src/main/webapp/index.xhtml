@@ -1,0 +1,55 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>Pagina Inicial</title>
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<h:commandButton value="Listar" actionListener="#{bbean.listar}" />
+		<h:commandButton value="Nova" action="cadastroTurma?faces-redirect=true" />
+		<h:dataTable value="#{bbean.turmas}" var="turma"
+			style="background-color:gray" cellpadding="5" cellspacing="1"
+			headerClass="header" border="1" rowClasses="greenRow,whiteRow">
+			
+			<h:column>
+				<f:facet name="header"></f:facet>
+				<h:selectBooleanCheckbox onclick="submit();" value="#{bbean.editavel[turma.id]}" />
+			
+			</h:column>
+			
+			<h:column>
+			<h:link></h:link>
+				<f:facet name="header">Nome</f:facet>
+				<h:commandLink value="#{turma.nome}"
+					rendered="#{!bbean.editavel[turma.id]}"  actionListener="#{bbean.mostrar(turma)}" action="listarAluno?faces-redirect=true"/>
+				<h:inputText value="#{turma.nome}"
+					rendered="#{bbean.editavel[turma.id]}"></h:inputText>
+
+				<h:commandLink actionListener="#{bbean.salvar(turma)}"
+					rendered="#{bbean.editavel[turma.id]}" styleClass="fa fa-save">
+				</h:commandLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Data Criação</f:facet>
+					#{turma.dataCriacao}
+				</h:column>
+			<h:column>
+				<h:commandLink actionListener="#{bbean.excluir(turma)}"
+					styleClass="fa fa-remove">
+				</h:commandLink>
+				</h:column>
+		</h:dataTable>
+	</h:form>
+</h:body>
+
+</html>
